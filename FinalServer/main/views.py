@@ -36,11 +36,6 @@ from django.http import JsonResponse
     
 #     return HttpResponse(status=400)
 
-# def home(request):
-#     context = {
-#         'sensor_value': sensor_data.get('value')
-#     }
-#     return render(request, 'index.html', context)
 
 # class RandomValuesView(View):
 #     def post(self, request):
@@ -54,8 +49,7 @@ from django.http import JsonResponse
 #             return HttpResponse(status=200)
 #         else:
 #             return HttpResponse(status=400)
-        
-# def index(request):
+   
 #     # context = {
 #     #     'var' : 'Suman'
 #     # }
@@ -66,10 +60,19 @@ def about(request):
     return render(request,'about.html')
 
 def pastdatas(request):
-    return render(request,'pastdatas.html')
+    data = randomData.objects.all()
+    sensor = {
+    "sensor_value": data
+}
+    return render(request, 'pastdatas.html', sensor)
 
 def index(request):
-    return render(request,'index.html')
+    
+    latest_data = randomData.objects.latest('created_at')
+    return render(request, 'index.html', {'latest_data': latest_data})
+
+
+    
 
 # @csrf_exempt
 # def index(request):
@@ -93,23 +96,17 @@ def index(request):
 def esp32_data_view(request):
     if request.method == 'POST':
         # Access and process the data sent by the ESP32
-        value1 = int(request.POST.get('value1'))
-        value2 = int(request.POST.get('value2'))
-        
-        # Save the data in the database
-        esp32_data = randomData(value1=value1, value2=value2)
+        value1 = (request.POST.get('data1'))
+        value2 = (request.POST.get('data2'))
+        print (value1)
+        print (value2)
+        esp32_data = randomData(random1=value1, random2=value2)
         esp32_data.save()
-
-        # Prepare the response data
-        # Retrieve the data from the request
-        value1 = request.POST.get('value1')
-        value2 = request.POST.get('value2')
-
-        # Process and save the data to the database
-        # ...
-
-        # Return a response indicating success
+        # Save the data in the database
+      #  esp32_data = randomData(value1, value2)
+       
         return HttpResponse('Data received and saved successfully.')
 
     # Return a response for other HTTP methods (GET, etc.)
     return HttpResponse('Invalid request method.')
+

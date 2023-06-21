@@ -2,6 +2,13 @@
 {% block title %}Home | Random Values
 {% endblock title %}
 
-{% block body %} Random Value 1: {{sensor_value}}<br>
-Random Value 2: {{sensor_value}}
+{% block body %} 
+
+Random Value 1:  {{latest_data.random1}} 
+<br>
+    Random Value 2:  {{latest_data.random2}}
+<br>
+Time Stamp :  {{latest_data.created_at}}
+<br>
+
 {% endblock body %}

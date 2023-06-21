@@ -2,5 +2,13 @@
 {% block title %}Past Datas
 {% endblock title %}
 
-{% block body %}This is past datas
+{% block body %}This is past datas 
+<br>
+{% for randomData in sensor_value %}
+Random Value 1:  {{ randomData.random1}} 
+<br>
+    Random Value 2:  {{ randomData.random2}}
+<br>
+{% endfor %}
+
 {% endblock body %}
