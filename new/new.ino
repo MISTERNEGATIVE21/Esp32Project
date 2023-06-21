@@ -1,10 +1,10 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ssid = "HP 0263";
-const char* password = "a502<M22";
+const char* ssid = "Normal wifi";
+const char* password = "sayak123";
 //const char* serverURL = "http://192.168.137.95:8000/esp32_data_view/";
-const char* serverURL = "http://127.0.0.1:8000/esp32_data_view/";
+const char* serverURL = "http://192.168.217.70:8000/esp32_data_view/";
 
 void setup() {
   Serial.begin(115200);
@@ -20,31 +20,44 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 
+
 void loop() {
-  // Simulate sensor readings
-  int random1 = esp_random();
-  int random2 = random(100);
-  Serial.println(random1);
-  Serial.println(random2);
-  // Create a JSON payload with the sensor data
-  String payload = "Random 1 =" + String(random1) + "& Random 2 =" + String(random2);
+  // Generate two random values
+  int randomValue1 = random(0, 100);
+  int randomValue2 = random(0, 100);
 
-  // Make a POST request to the Django server
+  // Convert the random values to strings
+  String data1 = String(randomValue1);
+  String data2 = String(randomValue2);
+
+  // Send the data to the server
+  sendDataToServer(data1, data2);
+
+  delay(5000); // Delay between each data transmission
+}
+
+void sendDataToServer(const String& data1, const String& data2) {
   HTTPClient http;
-  http.begin(serverURL);
-  http.addHeader("Content-Type", "numeric/plain");
-  int httpResponseCode = http.POST(payload);
 
-  // Check the response from the server
-  if (httpResponseCode == HTTP_CODE_OK) {
-    //String response = http.getString();
-    Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
+  // Specify the server and resource path
+  String url = serverURL;
+
+  // Create the POST request payload
+  String payload = "data1=" + data1 + "&data2=" + data2;
+
+  // Make POST request
+  http.begin(url);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+  int httpCode = http.POST(payload);
+
+  // Check the HTTP response code
+  if (httpCode == HTTP_CODE_OK) {
+    String response = http.getString();
+    Serial.println("Received response: " + response);
+    // Handle the response as needed
   } else {
-    Serial.print("Error sending request. Error code: ");
-    Serial.println(httpResponseCode);
+    Serial.println("Error: HTTP request failed with code " + String(httpCode));
   }
-  http.end();
 
-  delay(5000);  // Wait for 5 seconds before sending the next request
+  http.end();
 }

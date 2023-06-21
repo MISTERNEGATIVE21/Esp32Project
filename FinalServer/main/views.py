@@ -93,22 +93,16 @@ def index(request):
 def esp32_data_view(request):
     if request.method == 'POST':
         # Access and process the data sent by the ESP32
-        value1 = int(request.POST.get('value1'))
-        value2 = int(request.POST.get('value2'))
-        
-        # Save the data in the database
-        esp32_data = randomData(value1=value1, value2=value2)
+        value1 = (request.POST.get('data1'))
+        value2 = (request.POST.get('data2'))
+        print (value1)
+        print (value2)
+        esp32_data = randomData(random1=value1, random2=value2)
         esp32_data.save()
-
-        # Prepare the response data
-        # Retrieve the data from the request
-        value1 = request.POST.get('value1')
-        value2 = request.POST.get('value2')
-
-        # Process and save the data to the database
-        # ...
-
-        # Return a response indicating success
+        # Save the data in the database
+      #  esp32_data = randomData(value1, value2)
+       # esp32_data.save()
+#
         return HttpResponse('Data received and saved successfully.')
 
     # Return a response for other HTTP methods (GET, etc.)
