@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | Random Values
+{% endblock title %}
+{% block body %}  
+{% if latest_data.random1 %}
+    {% block body %} 
+        
+            Random Value 1:  {{latest_data.random1}} 
+            <br>
+            Random Value 2:  {{latest_data.random2}}
+            <br>
+            Time Stamp :  {{latest_data.created_at}}
+            <br>
+        {% else %}
+            <p> Not connected with the ESP32 Board </p>
+            <p> hello!! </p>
+    {% endblock body %}
+{% endif %}
+
