@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | Random Values
+{% endblock title %}
+{% block body %} 
+    <center>    
+    Temperature:  {{latest_data.random1}} °C
+    <br>
+    Humidity:  {{latest_data.random2}} %
+    <br>
+    Time Stamp :  {{latest_data.created_at}}
+    <br>
+    </center> 
+{% endblock body %}
+{% comment %} {% endif %} {% endcomment %}
+
